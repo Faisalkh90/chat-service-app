@@ -6,11 +6,13 @@ import fs from "fs";
 import path from "path";
 import * as dotenv from "dotenv";
 import { notFound, errorHandler } from "./Middleware/ErrorMiddleware";
+import connectDB from "./Config/Database";
 
 import UserRoutes from "./Routes/UserRoutes";
 
 //** CONFIG **/
 const app: Application = express();
+connectDB();
 dotenv.config();
 app.use(express.json());
 app.use(cors({ origin: ["http://localhost:3000", "*"] }));
