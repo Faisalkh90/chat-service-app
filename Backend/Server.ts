@@ -1,14 +1,21 @@
-import express from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import https from "https";
 import { Server } from "socket.io";
 import fs from "fs";
 import path from "path";
 import * as dotenv from "dotenv";
+import { notFound, errorHandler } from "./Middleware/ErrorMiddleware";
+
+import UserRoutes from "./Routes/UserRoutes";
 
 //** CONFIG **/
-const app = express();
+const app: Application = express();
 dotenv.config();
+app.use(express.json());
+app.use(cors({ origin: ["http://localhost:3000", "*"] }));
+app.use(notFound);
+app.use(errorHandler);
 
 //** SSL_SERVER **//
 const SSL_SERVER = https.createServer(
@@ -19,20 +26,15 @@ const SSL_SERVER = https.createServer(
   app
 );
 
+// routes config
+app.use("/users", UserRoutes);
+
 //** SOCKET_SERVER **//
 const io = new Server(SSL_SERVER, {
   cors: { origin: "*", methods: ["GET", "POST"] },
 });
 
-//** MIDDLEWARE **/
-app.use(express.json());
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "*"],
-  })
-);
-
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Hello from the chat-service");
 });
 
