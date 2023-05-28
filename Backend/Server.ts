@@ -1,4 +1,4 @@
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import https from "https";
 import { Server } from "socket.io";
@@ -17,21 +17,17 @@ dotenv.config();
 app.use(express.json());
 app.use(cors({ origin: ["http://localhost:3000", "*"] }));
 
-
 //** SSL_SERVER **//
 const SSL_SERVER = https.createServer(
   {
-    key: fs.readFileSync(path.join(__dirname, "cert", "key.pem")),
-    cert: fs.readFileSync(path.join(__dirname, "cert", "cert.pem")),
+    key: fs.readFileSync(path.join(__dirname, "Cert", "key.pem")),
+    cert: fs.readFileSync(path.join(__dirname, "Cert", "cert.pem")),
   },
   app
 );
 
 // routes config
 app.use("/users", UserRoutes);
-
-
-
 
 //** SOCKET_SERVER **//
 const io = new Server(SSL_SERVER, {
