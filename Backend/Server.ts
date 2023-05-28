@@ -16,8 +16,7 @@ connectDB();
 dotenv.config();
 app.use(express.json());
 app.use(cors({ origin: ["http://localhost:3000", "*"] }));
-app.use(notFound);
-app.use(errorHandler);
+
 
 //** SSL_SERVER **//
 const SSL_SERVER = https.createServer(
@@ -31,6 +30,9 @@ const SSL_SERVER = https.createServer(
 // routes config
 app.use("/users", UserRoutes);
 
+
+
+
 //** SOCKET_SERVER **//
 const io = new Server(SSL_SERVER, {
   cors: { origin: "*", methods: ["GET", "POST"] },
@@ -39,6 +41,10 @@ const io = new Server(SSL_SERVER, {
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from the chat-service");
 });
+
+//** ERROR_MIDDLEWARE **//
+app.use(notFound);
+app.use(errorHandler);
 
 io.on("connection", (socket) => {
   socket.emit("me", socket.id);
