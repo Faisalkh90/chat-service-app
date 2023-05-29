@@ -4,6 +4,7 @@ import https from "https";
 import { Server } from "socket.io";
 import fs from "fs";
 import path from "path";
+import coockieParser from "cookie-parser";
 import * as dotenv from "dotenv";
 import { notFound, errorHandler } from "./Middleware/ErrorMiddleware";
 import connectDB from "./Config/Database";
@@ -16,6 +17,7 @@ connectDB();
 dotenv.config();
 app.use(express.json());
 app.use(cors({ origin: ["http://localhost:3000", "*"] }));
+app.use(coockieParser());
 
 //** SSL_SERVER **//
 const SSL_SERVER = https.createServer(
