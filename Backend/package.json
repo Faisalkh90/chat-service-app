@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon Server.ts"
+    "dev": "nodemon Server.ts",
+    "dev2": "npx nodemon Server.ts"
   },
   "author": "",
   "license": "ISC",
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie-parser": "^1.4.3",
-    "@types/jsonwebtoken": "^9.0.2"
+    "@types/jsonwebtoken": "^9.0.2",
+    "prettier": "2.8.8"
   }
 }

@@ -11,6 +11,11 @@ import connectDB from "./Config/Database";
 
 import UserRoutes from "./Routes/UserRoutes";
 
+//** MODELS **/
+import User from "./Models/UserModel";
+import Message from "./Models/MessageModel";
+import ChatRoom from "./Models/ChatRoomModel";
+
 //** CONFIG **/
 const app: Application = express();
 connectDB();
