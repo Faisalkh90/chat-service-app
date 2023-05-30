@@ -27,6 +27,11 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
+
+  /*
+    -generate random salt to hash password
+    - 10 is the number of rounds to generate the salt => 2^10 = 1024 rounds of hashing the password
+   */
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

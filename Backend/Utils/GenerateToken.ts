@@ -6,6 +6,7 @@ export default function generateToken(res: Response, userID: string) {
   const token = jwt.sign({ userID }, process.env.ACESS_TOKEN_SECRET!, {
     expiresIn: "1d",
   });
+  console.log(`token: , ${token}`);
 
   res.cookie("jwt", token, {
     httpOnly: true,
