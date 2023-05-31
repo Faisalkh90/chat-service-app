@@ -10,12 +10,11 @@ import { notFound, errorHandler } from "./Middleware/ErrorMiddleware";
 import connectDB from "./Config/Database";
 
 import UserRoutes from "./Routes/UserRoutes";
-import ChatRoomRoutes from "./Routes/ChatRoomRoutes";
+import MessageRoutes from "./Routes/MessageRoutes";
 
 //** MODELS **/
 import User from "./Models/UserModel";
 import Message from "./Models/MessageModel";
-import ChatRoom from "./Models/ChatRoomModel";
 
 //** CONFIG **/
 const app: Application = express();
@@ -36,7 +35,7 @@ const SSL_SERVER = https.createServer(
 
 // routes config
 app.use("/users", UserRoutes);
-app.use("/chatroom", ChatRoomRoutes);
+app.use("/messages", MessageRoutes);
 
 //** SOCKET_SERVER **//
 const io = new Server(SSL_SERVER, {
