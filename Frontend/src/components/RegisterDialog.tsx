@@ -28,12 +28,9 @@ export default function RegisterDialog({ open, handleClosing }: any) {
   return (
     <div>
       <Dialog open={open} onClose={handleClosing}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Sign-Up</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
+          <DialogContentText>Chat-App : Telegram clone</DialogContentText>
           <TextField
             autoFocus
             margin="dense"

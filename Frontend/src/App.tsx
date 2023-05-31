@@ -1,7 +1,10 @@
-import SignInSide from "./screens/Login";
+import { BrowserRouter as Router } from "react-router-dom";
+import AllRoutes from "./routes/Routes";
 
-function App() {
-  return <SignInSide />;
+export default function App() {
+  return (
+    <Router>
+      <AllRoutes />
+    </Router>
+  );
 }
-
-export default App;
