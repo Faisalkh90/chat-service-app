@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,13 +13,30 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import RegisterDialog from "../components/RegisterDialog";
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../slices/usersAPISlice";
+import { setCredentials } from "../slices/authSlice";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state: any) => state.auth);
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/123");
+    }
+  }, [navigate, userInfo]);
 
   useEffect(() => {
     if (
@@ -33,15 +51,16 @@ export default function Login() {
     }
   }, [email, password]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  async function handleSubmit(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate("/123");
+    } catch (error) {
+      alert("Error with login");
+    }
+  }
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
@@ -77,12 +96,7 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 1 }}
-          >
+          <Box sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -119,15 +133,14 @@ export default function Login() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, backgroundColor: "#30A2FF" }}
+              onClick={(e: any) => handleSubmit(e)}
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="#" variant="body2" onClick={() => setOpen(true)}>
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
+            <Grid>
+              <Link href="#" variant="body2" onClick={() => setOpen(true)}>
+                {"Don't have an account? Sign Up"}
+              </Link>
             </Grid>
           </Box>
         </Box>
