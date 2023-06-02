@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import RegisterDialog from "../components/RegisterDialog";
+import { toast } from "react-toastify";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../slices/usersAPISlice";
@@ -34,9 +35,9 @@ export default function Login() {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/123");
+      navigate("/chat");
     }
-  }, [navigate, userInfo]);
+  }, [userInfo, navigate]);
 
   useEffect(() => {
     if (
@@ -56,9 +57,9 @@ export default function Login() {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
-      navigate("/123");
+      navigate("/chat");
     } catch (error) {
-      alert("Error with login");
+      toast.error("Invalid Credentials");
     }
   }
   return (

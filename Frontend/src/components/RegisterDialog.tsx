@@ -7,11 +7,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+import { useRegisterMutation } from "../slices/usersAPISlice";
+import { toast } from "react-toastify";
+
 export default function RegisterDialog({ open, handleClosing }: any) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
+
+  const [register] = useRegisterMutation();
 
   useEffect(() => {
     if (
@@ -25,6 +30,16 @@ export default function RegisterDialog({ open, handleClosing }: any) {
       setDisabled(true);
     }
   }, [email, password]);
+
+  async function handleRegistartion() {
+    try {
+      await register({ name, email, password }).unwrap();
+      toast.success("User registered, Please login to continue");
+      handleClosing();
+    } catch (error) {
+      toast.error("Registration error");
+    }
+  }
   return (
     <div>
       <Dialog open={open} onClose={handleClosing}>
@@ -70,7 +85,7 @@ export default function RegisterDialog({ open, handleClosing }: any) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClosing}>Cancel</Button>
-          <Button disabled={disabled} onClick={handleClosing}>
+          <Button disabled={disabled} onClick={handleRegistartion}>
             Sign-Up
           </Button>
         </DialogActions>
