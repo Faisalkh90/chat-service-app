@@ -8,7 +8,9 @@ import {
 } from "../Interface/UserTypes";
 import validator from "validator";
 
+// Login user
 async function loginUser(req: Request, res: Response) {
+  // Get email and password from request body
   const { email, password }: userLogin = req.body;
 
   try {
@@ -21,7 +23,7 @@ async function loginUser(req: Request, res: Response) {
       await generateToken(res, user.id);
       console.log("User logged in");
 
-      // Send response with user data
+      // Send response
       res.status(200).json({
         _id: user.id,
         name: user.name,
@@ -39,8 +41,11 @@ async function loginUser(req: Request, res: Response) {
   }
 }
 
+// Register user
 async function registerUser(req: Request, res: Response) {
+  // Get name, email and password from request body
   const { name, email, password }: userRegistration = req.body;
+  // Check if user exists
   const userExists: userLogin2 | null = await UserModel.findOne({ email });
   if (userExists) {
     res.status(404);
@@ -56,14 +61,17 @@ async function registerUser(req: Request, res: Response) {
   //   throw new Error("Invalid email address format ");
   // }
 
+  // Create user
   const user = await UserModel.create({
     name,
     email,
     password,
   });
 
+  // Check if user was created
   if (user) {
     console.log(user);
+    // Generate JWT token
     generateToken(res, user.id);
 
     res.status(201).json({
@@ -78,7 +86,9 @@ async function registerUser(req: Request, res: Response) {
   }
 }
 
+// Logout user
 async function logoutUser(req: Request, res: Response, next: NextFunction) {
+  // Clear cookie and reset token for authentication purposes
   res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
@@ -88,10 +98,12 @@ async function logoutUser(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
+// Get user profile
 async function getUserProfile(req: Request, res: Response) {
   res.send("update profile");
 }
 
+// Update user profile
 async function updateUserProfile(req: Request, res: Response) {
   res.send("update profile");
 }
