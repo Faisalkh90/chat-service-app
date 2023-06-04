@@ -35,7 +35,7 @@ const SSL_SERVER = https.createServer(
 
 // routes config
 app.use("/users", UserRoutes);
-app.use("/messages", MessageRoutes);
+app.use("/chat", MessageRoutes);
 
 //** SOCKET_SERVER **//
 const io = new Server(SSL_SERVER, {
