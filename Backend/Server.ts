@@ -28,20 +28,23 @@ app.use(cors({ origin: ["http://localhost:3000", "*"] }));
 app.use(coockieParser());
 
 //** SSL_SERVER **//
-const SSL_SERVER = https.createServer(
-  {
-    key: fs.readFileSync(path.join(__dirname, "Cert", "key.pem")),
-    cert: fs.readFileSync(path.join(__dirname, "Cert", "cert.pem")),
-  },
-  app
-);
+// const SSL_SERVER = https.createServer(
+//   {
+//     key: fs.readFileSync(path.join(__dirname, "Cert", "key.pem")),
+//     cert: fs.readFileSync(path.join(__dirname, "Cert", "cert.pem")),
+//   },
+//   app
+// );
 
 // routes config
 app.use("/users", UserRoutes);
 app.use("/chatroom", ChatRoomRoutes);
+const server = app.listen(process.env.PORT, () => {
+  console.log(`secure server on port ${process.env.PORT}`);
+});
 
 //** SOCKET_SERVER **//
-const io = new Server(SSL_SERVER, {
+const io = new Server(server, {
   cors: { origin: "*", methods: ["GET", "POST"] },
 });
 
@@ -57,16 +60,16 @@ const message = mongoose.model("Message");
 const user = mongoose.model("User");
 
 // middleware function is used to authenticate Socket.IO connections by verifying JWT tokens
-io.use(async (socket, next) => {
-  try {
-    const token: any = socket.handshake.query.token;
-    const payload: any = jwt.verify(token, process.env.ACESS_TOKEN_SECRET!);
-    socket.data.userId = payload.id;
-    next();
-  } catch (error) {
-    console.log("invalid token");
-  }
-});
+// io.use(async (socket, next) => {
+//   try {
+//     const token: any = socket.handshake.query.token;
+//     const payload: any = jwt.verify(token, process.env.ACESS_TOKEN_SECRET!);
+//     socket.data.userId = payload.id;
+//     next();
+//   } catch (error) {
+//     console.log("invalid token");
+//   }
+// });
 
 //event listener that listens for the connection event, which is emitted when a new client connects to the server
 io.on("connection", (socket) => {
@@ -114,7 +117,4 @@ io.on("connection", (socket) => {
       await newMessage.save();
     }
   });
-});
-SSL_SERVER.listen(process.env.PORT, () => {
-  console.log(`secure server on port ${process.env.PORT}`);
 });

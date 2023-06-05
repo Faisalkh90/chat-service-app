@@ -1,8 +1,7 @@
-import { Response } from "express";
 import jwt from "jsonwebtoken";
 
 //create token inside cookie
-export default function generateToken(res: Response, userID: string) {
+export default function generateToken(res: any, userID: string) {
   const token = jwt.sign({ userID }, process.env.ACESS_TOKEN_SECRET!, {
     expiresIn: "1d",
   });

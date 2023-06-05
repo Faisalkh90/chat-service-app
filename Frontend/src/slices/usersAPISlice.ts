@@ -1,6 +1,7 @@
 import { apiSlice } from "./apiSlice";
 
 const USERS_URL = "/users";
+const CHATS_URL = "/chat";
 
 export const usersAPISlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -26,8 +27,20 @@ export const usersAPISlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
+    createChat: builder.mutation({
+      query: (data) => ({
+        url: `${CHATS_URL}/createChat`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation } =
-  usersAPISlice;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useRegisterMutation,
+  useCreateChatMutation,
+} = usersAPISlice;

@@ -1,5 +1,3 @@
-type chatRoom = {
+export type chatRoom = {
   name: string;
 };
-
-export type { chatRoom };

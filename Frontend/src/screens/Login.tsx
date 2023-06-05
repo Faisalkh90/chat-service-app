@@ -35,7 +35,7 @@ export default function Login() {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/chat");
+      navigate("/dashboard");
     }
   }, [userInfo, navigate]);
 
@@ -57,7 +57,7 @@ export default function Login() {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
-      navigate("/chat");
+      navigate("/dashboard");
     } catch (error) {
       toast.error("Invalid Credentials");
     }

@@ -6,7 +6,6 @@ import {
   userLogin,
   userLogin2,
 } from "../Interface/UserTypes";
-import validator from "validator";
 
 // Login user
 async function loginUser(req: Request, res: Response) {
@@ -20,12 +19,12 @@ async function loginUser(req: Request, res: Response) {
     // Check if user exists and password is correct
     if (user && (await user.matchPasswords(password))) {
       // Generate JWT token
-      await generateToken(res, user.id);
+      generateToken(res, user._id);
       console.log("User logged in");
 
       // Send response
       res.status(200).json({
-        _id: user.id,
+        id: user._id,
         name: user.name,
         email: user.email,
       });
@@ -54,12 +53,6 @@ async function registerUser(req: Request, res: Response) {
     name: ${name}
     `);
   }
-
-  // Validate email
-  // if (!validator.isEmail(email)) {
-  //   res.status(400);
-  //   throw new Error("Invalid email address format ");
-  // }
 
   // Create user
   const user = await UserModel.create({
