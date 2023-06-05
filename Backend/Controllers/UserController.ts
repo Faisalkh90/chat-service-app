@@ -8,8 +8,11 @@ import {
 } from "../Interface/UserTypes";
 
 // Login user
+// the token will not be saved into cookie from the back-end
+// it will be saved from the front-end
+// JWT will be send in the res body
+// the front-end will take it and save it
 async function loginUser(req: Request, res: Response) {
-  // Get email and password from request body
   const { email, password }: userLogin = req.body;
 
   try {
@@ -19,14 +22,14 @@ async function loginUser(req: Request, res: Response) {
     // Check if user exists and password is correct
     if (user && (await user.matchPasswords(password))) {
       // Generate JWT token
-      generateToken(res, user._id);
+      const token = generateToken(res, user._id);
       console.log("User logged in");
 
-      // Send response
       res.status(200).json({
         id: user._id,
         name: user.name,
         email: user.email,
+        authToken: token,
       });
     } else {
       // Unauthorized or bad request
@@ -34,7 +37,6 @@ async function loginUser(req: Request, res: Response) {
       console.error("Invalid email or password");
     }
   } catch (error) {
-    // Server error
     res.sendStatus(500);
     console.error(error);
   }
@@ -42,7 +44,6 @@ async function loginUser(req: Request, res: Response) {
 
 // Register user
 async function registerUser(req: Request, res: Response) {
-  // Get name, email and password from request body
   const { name, email, password }: userRegistration = req.body;
   // Check if user exists
   const userExists: userLogin2 | null = await UserModel.findOne({ email });

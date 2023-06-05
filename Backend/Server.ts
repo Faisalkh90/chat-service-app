@@ -23,9 +23,9 @@ import mongoose from "mongoose";
 const app: Application = express();
 connectDB();
 dotenv.config();
+app.use(coockieParser());
 app.use(express.json());
 app.use(cors({ origin: ["http://localhost:3000", "*"] }));
-app.use(coockieParser());
 
 //** SSL_SERVER **//
 // const SSL_SERVER = https.createServer(

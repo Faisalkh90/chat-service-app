@@ -6,7 +6,8 @@ import { NextFunction, Request, Response } from "express";
 async function protection(req: any, res: Response, next: NextFunction) {
   //get token from header
   let token;
-  token = req.cookies.jwt;
+  const authHeaders = req.headers["authorization"];
+  token = authHeaders?.split(" ")[1];
 
   //check if token exists
   if (token) {

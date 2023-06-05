@@ -15,9 +15,17 @@ export default function MediaCard() {
   const [chatroomList, setChatroomList] = useState([{}] as any);
 
   async function getChatroomList() {
-    const result = await axios.get(
-      "http://localhost:8080/chatroom/getChatRooms"
-    );
+    const acessToken = JSON.parse(localStorage.getItem("userInfo")!)[
+      "authToken"
+    ];
+
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    const url = "http://localhost:8080/chatroom/getChatRooms";
+    const result = await axios.get(url, { headers });
+
     console.log(result.data);
   }
 
