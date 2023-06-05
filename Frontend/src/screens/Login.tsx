@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../slices/usersAPISlice";
 import { setCredentials } from "../slices/authSlice";
 
-export default function Login() {
+export default function Login({ socket }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);

@@ -80,38 +80,38 @@ io.on("connection", (socket) => {
   });
 
   //event listener is triggered when a client wants to join a chat room.
-  socket.on("joinRoom", ({ chatRoomID }) => {
+  socket.on("joinRoom", ({ chatroomId }) => {
     //join the room
-    socket.join(chatRoomID);
-    console.log(`A user joined chatroom: ${chatRoomID}`);
+    socket.join(chatroomId);
+    console.log(`A user joined chatroom: ${chatroomId}`);
   });
 
   //event listener is triggered when a client wants to leave a chat room
-  socket.on("leaveRoom", ({ chatRoomID }) => {
+  socket.on("leaveRoom", ({ chatroomId }) => {
     //leave the room
-    socket.leave(chatRoomID);
-    console.log(`A user left chatroom: ${chatRoomID}`);
+    socket.leave(chatroomId);
+    console.log(`A user left chatroom: ${chatroomId}`);
   });
 
   //event listener is triggered when a client sends a new chat message.
-  socket.on("chatroomMessage", async ({ chatRoomID, message }) => {
+  socket.on("chatroomMessage", async ({ chatroomId, message, userId }) => {
     //check if the message not empty then emit the new message event to clients in the specified chat room
-    if (message.trim().length > 0) {
+    if (message.trim().length >= 0) {
       //find the user by id
-      const user = await User.findById({ _id: socket.data.userId });
+      const user = await User.findById({ _id: userId });
       //create a new message document
       const newMessage = new Message({
-        chatroom: chatRoomID,
-        user: socket.data.userId,
+        chatroom: chatroomId,
+        user: userId,
         message: message,
       });
       //check if the user not found then throw an error
       if (!user) throw new Error("User not found");
       //Sends a new message event to all clients in the specified chat room
-      io.to(chatRoomID).emit("newMessage", {
+      io.to(chatroomId).emit("newMessage", {
         message,
         name: user.name,
-        userID: socket.data.userId,
+        userID: userId,
       });
       //Saves a new document to the database
       await newMessage.save();

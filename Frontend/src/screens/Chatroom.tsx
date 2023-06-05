@@ -1,24 +1,69 @@
-import React, { useState } from "react";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import io from "socket.io-client";
 import Header from "../components/Header";
 import { Box, Button, TextField } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { toast } from "react-toastify";
+import { ListItem, List, IconButton } from "@mui/material";
+import { Padding } from "@mui/icons-material";
 
-import SendIcon from "@mui/icons-material/Send";
-
-const Message = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.grey[200],
-  borderRadius: theme.shape.borderRadius,
-  margin: theme.spacing(1),
-  padding: theme.spacing(1),
-}));
+type message = {
+  message: string;
+  name: string;
+  userID: string;
+};
 
 export default function Chatroom() {
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log(searchParams.get("id"));
 
-  const messageList = [{ text: "asd" }, { text: "asdasdasd" }];
+  const [messages, setMessages] = useState([]);
+
+  const [newMessage, setNewMessage] = useState();
+
+  const [socket, setSocket] = useState() as any;
+
+  const newSocket = io("http://localhost:8080", {
+    query: {
+      token: JSON.parse(localStorage.getItem("userInfo")!)["authToken"],
+    },
+  });
+
+  function sendMessage() {
+    newSocket.emit("chatroomMessage", {
+      chatroomId: searchParams.get("id"),
+      message: newMessage,
+      userId: JSON.parse(localStorage.getItem("userInfo")!)["id"],
+    });
+  }
+
+  newSocket.on("disconnect", () => {
+    setSocket(null);
+  });
+
+  newSocket.on("connection", () => {
+    toast.success("Socket Connection");
+    setSocket(newSocket);
+  });
+
+  useEffect(() => {
+    newSocket.emit("joinRoom", {
+      chatroomId: searchParams.get("id"),
+    });
+
+    newSocket.on("newMessage", (message) => {
+      setMessages((prev: any) => [...prev, message] as any);
+    });
+
+    return () => {
+      newSocket.emit("leaveRoom", {
+        chatroomId: searchParams.get("id"),
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(messages);
+  }, [messages]);
 
   return (
     <>
@@ -32,8 +77,29 @@ export default function Chatroom() {
           height: "70vh",
           backgroundColor: "#F9F5F8",
           borderRadius: 5,
+          padding: 2,
+          overflow: "auto",
         }}
       >
+        {messages.length > 0 &&
+          messages.map((message: any) => (
+            <Box
+              sx={{
+                backgroundColor: "#4F709C",
+                borderRadius: 2,
+                opacity: 0.9,
+                maxHeight: 150,
+              }}
+            >
+              <p color="white">
+                name:{message.name}
+                <br />
+                Content:{message.message}
+              </p>
+              {/* <h5>Name: {message.name}</h5>
+              <h5>Content: {message.message}</h5> */}
+            </Box>
+          ))}
         <Box
           sx={{
             position: "absolute",
@@ -49,6 +115,9 @@ export default function Chatroom() {
             name="message"
             label="message"
             sx={{ width: "80%" }}
+            onChange={(e: any) => {
+              setNewMessage(e.target.value);
+            }}
           />
           <Button
             variant="contained"
@@ -57,6 +126,9 @@ export default function Chatroom() {
               marginLeft: 1,
               height: 55,
               width: 100,
+            }}
+            onClick={() => {
+              sendMessage();
             }}
           >
             Send

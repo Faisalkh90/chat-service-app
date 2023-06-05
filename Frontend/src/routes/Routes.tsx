@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Login from "../screens/Login";
 import Dashboard from "../screens/Chat";
 import ChatRoom from "../screens/Chatroom";
 import Header from "../components/Header";
+import { io } from "socket.io-client";
+import { toast } from "react-toastify";
 
 export default function AllRoutes() {
   const Location = useLocation();

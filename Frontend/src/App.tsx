@@ -10,32 +10,6 @@ import io from "socket.io-client";
 import { toast } from "react-toastify";
 
 export default function App() {
-  const [socket, setSocket] = useState() as any;
-
-  function setUpSocket() {
-    const newSocket = io("http://localhost:8080", {
-      query: {
-        token: JSON.parse(localStorage.getItem("userInfo")!)["authToken"],
-      },
-    });
-
-    newSocket.on("disconnect", () => {
-      setSocket(null);
-
-      setTimeout(setUpSocket, 3000);
-      toast.error("Socket Disconnected!");
-    });
-
-    newSocket.on("connection", () => {
-      toast.success("Socket Connection");
-
-      setSocket(newSocket);
-    });
-  }
-  useEffect(() => {
-    setUpSocket();
-  }, []);
-
   return (
     <Provider store={store}>
       <ToastContainer />
