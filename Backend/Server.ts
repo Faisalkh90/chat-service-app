@@ -60,16 +60,16 @@ const message = mongoose.model("Message");
 const user = mongoose.model("User");
 
 // middleware function is used to authenticate Socket.IO connections by verifying JWT tokens
-// io.use(async (socket, next) => {
-//   try {
-//     const token: any = socket.handshake.query.token;
-//     const payload: any = jwt.verify(token, process.env.ACESS_TOKEN_SECRET!);
-//     socket.data.userId = payload.id;
-//     next();
-//   } catch (error) {
-//     console.log("invalid token");
-//   }
-// });
+io.use(async (socket, next) => {
+  try {
+    const token: any = socket.handshake.query.token;
+    const payload: any = jwt.verify(token, process.env.ACESS_TOKEN_SECRET!);
+    socket.data.userId = payload.id;
+    next();
+  } catch (error) {
+    console.log("invalid token");
+  }
+});
 
 //event listener that listens for the connection event, which is emitted when a new client connects to the server
 io.on("connection", (socket) => {

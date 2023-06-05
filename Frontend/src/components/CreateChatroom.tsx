@@ -9,10 +9,13 @@ import TextField from "@mui/material/TextField";
 import { ListItem, List, IconButton } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import axios from "axios";
+import { useNavigate, createSearchParams } from "react-router-dom";
 
 export default function MediaCard() {
   const [chatroomName, setChatroomName] = useState("");
   const [chatroomList, setChatroomList] = useState([{}] as any);
+
+  const nav = useNavigate();
 
   async function getChatroomList() {
     const acessToken = JSON.parse(localStorage.getItem("userInfo")!)[
@@ -27,13 +30,12 @@ export default function MediaCard() {
     const result = await axios.get(url, { headers });
 
     console.log(result.data);
+    setChatroomList(result.data);
   }
 
   useEffect(() => {
     getChatroomList();
   }, []);
-
-  const tempChatroom = [{ name: "test" }, { name: "test2" }];
 
   return (
     <Card sx={{ maxWidth: 600, margin: "auto", marginTop: 25 }}>
@@ -62,13 +64,24 @@ export default function MediaCard() {
       <CardActions>
         <Button size="small">Create</Button>
       </CardActions>
-      {tempChatroom ? (
-        tempChatroom.map((chatroom) => {
+      {chatroomList ? (
+        chatroomList.map((chatroom: any) => {
           return (
             <List>
               <ListItem
                 secondaryAction={
-                  <IconButton edge="end" aria-label="delete">
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => {
+                      nav({
+                        pathname: "/chatroom",
+                        search: createSearchParams({
+                          id: chatroom._id,
+                        }).toString(),
+                      });
+                    }}
+                  >
                     <ChatIcon />
                   </IconButton>
                 }

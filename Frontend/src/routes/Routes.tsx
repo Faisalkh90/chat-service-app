@@ -4,6 +4,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Login from "../screens/Login";
 import Dashboard from "../screens/Chat";
 import ChatRoom from "../screens/Chatroom";
+import Header from "../components/Header";
 
 export default function AllRoutes() {
   const Location = useLocation();
@@ -14,7 +15,7 @@ export default function AllRoutes() {
         <Route path="/" element={<Login />}></Route>
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard" element={<Dashboard />}></Route>
-          <Route path="/chatroom/:id" element={<ChatRoom />}></Route>
+          <Route path="/chatroom" element={<ChatRoom />}></Route>
         </Route>
       </Routes>
     </React.Fragment>
