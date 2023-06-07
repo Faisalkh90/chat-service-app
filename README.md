@@ -56,7 +56,7 @@ The Chat Application was built using the following technologies:
 
 The following flowchart represents the complete user journey through using the Chat Application:
 
-![User Interaction Flowchart](./user-flowchart.png)
+![User Interaction Flowchart](images/user-flowchart.jpg)
 
 It shows the various steps involved in using the application, including creating an account, logging in, joining a chat room, sending and receiving messages, and logging out.
 
