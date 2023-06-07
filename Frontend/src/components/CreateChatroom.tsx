@@ -10,6 +10,7 @@ import { ListItem, List, IconButton } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import axios from "axios";
 import { useNavigate, createSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function MediaCard() {
   const [chatroomName, setChatroomName] = useState("");
@@ -17,8 +18,27 @@ export default function MediaCard() {
 
   const nav = useNavigate();
 
+  async function createChatroom() {
+    const acessToken = JSON.parse(sessionStorage.getItem("userInfo")!)[
+      "authToken"
+    ];
+
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    const url = "http://localhost:8080/chatroom/createChatRoom";
+    const result = await axios.post(url, { name: chatroomName }, { headers });
+
+    if (result.status === 201) {
+      toast.success("Chatroom created successfully");
+    } else {
+      toast.error("Chatroom creation failed");
+    }
+  }
+
   async function getChatroomList() {
-    const acessToken = JSON.parse(localStorage.getItem("userInfo")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("userInfo")!)[
       "authToken"
     ];
 
@@ -28,8 +48,6 @@ export default function MediaCard() {
     };
     const url = "http://localhost:8080/chatroom/getChatRooms";
     const result = await axios.get(url, { headers });
-
-    console.log(result.data);
     setChatroomList(result.data);
   }
 
@@ -62,7 +80,9 @@ export default function MediaCard() {
         />
       </CardContent>
       <CardActions>
-        <Button size="small">Create</Button>
+        <Button onClick={() => createChatroom()} size="small">
+          Create
+        </Button>
       </CardActions>
       {chatroomList ? (
         chatroomList.map((chatroom: any) => {

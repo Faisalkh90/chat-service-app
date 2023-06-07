@@ -24,7 +24,7 @@ export default function Chatroom() {
 
   const newSocket = io("http://localhost:8080", {
     query: {
-      token: JSON.parse(localStorage.getItem("userInfo")!)["authToken"],
+      token: JSON.parse(sessionStorage.getItem("userInfo")!)["authToken"],
     },
   });
 
@@ -32,7 +32,7 @@ export default function Chatroom() {
     newSocket.emit("chatroomMessage", {
       chatroomId: searchParams.get("id"),
       message: newMessage,
-      userId: JSON.parse(localStorage.getItem("userInfo")!)["id"],
+      userId: JSON.parse(sessionStorage.getItem("userInfo")!)["id"],
     });
   }
 
@@ -85,13 +85,13 @@ export default function Chatroom() {
           messages.map((message: any) => (
             <Box
               sx={{
-                backgroundColor: "#4F709C",
+                backgroundColor: "#DBDFEA",
                 borderRadius: 2,
                 opacity: 0.9,
                 maxHeight: 150,
               }}
             >
-              <p color="white">
+              <p style={{ padding: 10 }}>
                 name:{message.name}
                 <br />
                 Content:{message.message}
@@ -122,7 +122,7 @@ export default function Chatroom() {
           <Button
             variant="contained"
             sx={{
-              backgroundColor: "#30A2FF",
+              backgroundColor: "#4F709C",
               marginLeft: 1,
               height: 55,
               width: 100,
