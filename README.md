@@ -9,7 +9,7 @@ The Chat Application is developed using Node.js, Express, MongoDB, React.js, Soc
 The application's front-end is developed using React.js, which is a popular JavaScript library for building user interfaces. The back-end is developed using Node.js and Express, which are popular JavaScript frameworks used for web development. MongoDB is used for the database management system, and Socket.io is used for real-time communication between users. JWT is used for user authentication and authorization.
 
 
-![Home page of the website](./home.png)
+![Home page of the website](images/home.png)
 
 
 ## Goals
