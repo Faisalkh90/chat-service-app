@@ -8,11 +8,10 @@ The Chat Application is developed using Node.js, Express, MongoDB, React.js, Soc
 
 The application's front-end is developed using React.js, which is a popular JavaScript library for building user interfaces. The back-end is developed using Node.js and Express, which are popular JavaScript frameworks used for web development. MongoDB is used for the database management system, and Socket.io is used for real-time communication between users. JWT is used for user authentication and authorization.
 
-
 ![Home page of the website](images/home.png)
 
-
 ## Goals
+
 Our development goals for the Chat Application were as follows:
 
 - Facilitate real-time communication between users through chat messages.
@@ -40,17 +39,14 @@ The Chat Application was built using the following technologies:
 - Node.js
 - JSON Web Tokens (JWT)
 
+## Team members
 
-## Team members 
-
-
-| Name                        |                  Github                                              | ID        |
-| --------------------------- | -------------------------------------------------------------------- |:---------:|
-| Turki Mohammed Alqahtani    | [Turkialq](https://github.com/Turkialq)                              | 440016263 |
-| Faisal Mansour Alkhalifah   | [Faisalkh90](https://github.com/Faisalkh90)                          | 440025849 |
-| Abdullah Mohammed Alqahtani | [AbdullahAlqahtani285](https://github.com/AbdullahAlqahtani285)      | 440018317 |
-| Abdullah Mohammed Alrasheed | [amhalrasheed](https://github.com/amhalrasheed)                      | 439027348 |
-
+| Name                        | Github                                                          |    ID     |
+| --------------------------- | --------------------------------------------------------------- | :-------: |
+| Turki Mohammed Alqahtani    | [Turkialq](https://github.com/Turkialq)                         | 440016263 |
+| Faisal Mansour Alkhalifah   | [Faisalkh90](https://github.com/Faisalkh90)                     | 440025849 |
+| Abdullah Mohammed Alqahtani | [AbdullahAlqahtani285](https://github.com/AbdullahAlqahtani285) | 440018317 |
+| Abdullah Mohammed Alrasheed | [amhalrasheed](https://github.com/amhalrasheed)                 | 439027348 |
 
 ## User Interaction Flowchart
 
@@ -60,6 +56,12 @@ The following flowchart represents the complete user journey through using the C
 
 It shows the various steps involved in using the application, including creating an account, logging in, joining a chat room, sending and receiving messages, and logging out.
 
+## Authentication Journey
+
+The following journy chart represents the authentication Journey (JWT) implementation.
+
+![Authentication Journey](images/Auth-workflow.jpeg)
+It displays the strategies we use for both login and registration.
 
 ## Getting Started
 
@@ -68,7 +70,7 @@ To get started with the Chat Application, follow these steps:
 1. Clone the repository to your local machine.
 2. Install the necessary dependencies by running `npm install` in both the client and server directories.
 3. Create a `.env` file in the server directory and add your MongoDB connection string and JWT secret key. For example:
- `MONGODB_URI=<your-mongodb-connection-string>
+   `MONGODB_URI=<your-mongodb-connection-string>
 JWT_SECRET=<your-jwt-secret-key>`
 4. Start the server by running `npm run dev` in the server directory.
 5. Start the client by running `npm run dev` in the client directory.

@@ -27,15 +27,6 @@ app.use(coockieParser());
 app.use(express.json());
 app.use(cors({ origin: ["http://localhost:3000", "*"] }));
 
-//** SSL_SERVER **//
-// const SSL_SERVER = https.createServer(
-//   {
-//     key: fs.readFileSync(path.join(__dirname, "Cert", "key.pem")),
-//     cert: fs.readFileSync(path.join(__dirname, "Cert", "cert.pem")),
-//   },
-//   app
-// );
-
 // routes config
 app.use("/users", UserRoutes);
 app.use("/chatroom", ChatRoomRoutes);

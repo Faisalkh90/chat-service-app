@@ -19,7 +19,7 @@ import { useLogoutMutation } from "../slices/usersAPISlice";
 import { clearCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["View profile", "Your Network"];
 const settings = ["Logout"];
 
 function ResponsiveAppBar() {
